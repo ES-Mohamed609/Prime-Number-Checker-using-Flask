@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Number Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Prime Number Checker</h1>
+        <input type="number" id="numberInput" placeholder="Enter a number">
+        <button onclick="checkPrime()">Check</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function checkPrime() {
+            // Get the value from the input field
+            const number = document.getElementById('numberInput').value;
+            // Send a POST request to the server
+            fetch('/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ number: number })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = `${number} is ${data.result}`;
+
+                 // Hide the result after 10 seconds
+                setTimeout(() => {
+                    resultElement.textContent = '';
+                }, 5000);
+            });
+        }
+    </script>
+</body>
+</html>
